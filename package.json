@@ -1,0 +1,15 @@
+{
+  "name": "webkooljs",
+  "version": "0.1.0",
+  "description": "Webkool javascript library for nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "nodejs"
+  ],
+  "author": "Sébastien BUREL <sb@haruni.net> http://haruni.net",
+  "license": "Apache-2.0"
+}
