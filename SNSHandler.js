@@ -17,24 +17,16 @@
 
 "use strict";
 
-// import {Handler,Behavior} from "./webkool";
-var _webkool = require("./webkool");
-var Handler = _webkool.Handler;
-var Behavior = _webkool.Behavior;
+var webkool = require("./webkool");
 
+var AWS, SNS;
 
-var AWS = require('aws-sdk');
-AWS.config.update({
-	accessKeyId: _webkool.key,
-	secretAccessKey: _webkool.secret,
-	region: _webkool.region
-});
+class createPlatformEndpoint extends webkool.Handler {
 
-var SNS = new AWS.SNS();
-
-
-class SNSCreatePlatformEndpointHandler extends Handler {
 	doRequest() {
+    AWS = AWS || require('aws-sdk');
+    SNS = SNS || new AWS.SNS();
+
 		try {
 			var handler = this, behavior = handler.behavior;
 			if (behavior && 'onConstruct' in behavior) {
@@ -48,63 +40,31 @@ class SNSCreatePlatformEndpointHandler extends Handler {
                 handler.result = data.EndpointArn;
               }
               else
-                handler.doError(new Error('SNS CreatePlatformEndpoint Handler"' + params.Token + '" ' + error));
+                handler.doError(new Error('SNSHandler.createPlatformEndpoint "' + params.Token + '" ' + error));
               handler.synchronize();
             }
             catch (e) {
-              _webkool.application.reportError(handler, e);
+              webkool.application.reportError(handler, e);
             }
           }
         );
       }
 			else
-				throw new Error('SNS CreatePlatformEndpoint "' + handler.url + '" has no parameters.');
+				throw new Error('SNSHandler.createPlatformEndpoint "' + handler.url + '" has no parameters.');
 		}
 		catch (e) {
-			_webkool.application.reportError(handler, e);
+			webkool.application.reportError(handler, e);
 		}
 	}
 }
-exports.SNSCreatePlatformEndpointHandler = SNSCreatePlatformEndpointHandler;
+exports.createPlatformEndpoint = createPlatformEndpoint;
 
 
-class SNSSubcribeHandler extends Handler {
+class publish extends webkool.Handler {
 	doRequest() {
-		try {
-			var handler = this, behavior = handler.behavior;
-			if (behavior && 'onConstruct' in behavior) {
-				var params = behavior.onConstruct(handler, handler.model, handler.query);
+    AWS = AWS || require('aws-sdk');
+    SNS = SNS || new AWS.SNS();
 
-        SNS.subscribe(
-          {Protocol: params.Protocol, TopicArn: params.TopicArn, Endpoint: params.Endpoint},
-          function(error, data) {
-            try {
-              if (!error) {
-                handler.result = data;
-              }
-              else
-                handler.doError(new Error('SNS Subcribe Handler"' + params.Endpoint + '" ' + error));
-              handler.synchronize();
-            }
-            catch (e) {
-              _webkool.application.reportError(handler, e);
-            }
-          }
-        );
-      }
-			else
-				throw new Error('SNS Subcribe Handler "' + handler.url + '" has no parameters.');
-		}
-		catch (e) {
-			_webkool.application.reportError(handler, e);
-		}
-	}
-}
-exports.SNSSubcribeHandler = SNSSubcribeHandler;
-
-
-class SNSPublishHandler extends Handler {
-	doRequest() {
 		try {
 			var handler = this, behavior = handler.behavior;
 			if (behavior && 'onConstruct' in behavior) {
@@ -122,17 +82,55 @@ class SNSPublishHandler extends Handler {
               handler.synchronize();
             }
             catch (e) {
-              _webkool.application.reportError(handler, e);
+              webkool.application.reportError(handler, e);
             }
           }
         );
       }
 			else
-				throw new Error('SNS Publish Handler "' + handler.url + '" has no parameters.');
+				throw new Error('SNSHandler.publish "' + handler.url + '" has no parameters.');
 		}
 		catch (e) {
-			_webkool.application.reportError(handler, e);
+			webkool.application.reportError(handler, e);
 		}
 	}
 }
-exports.SNSPublishHandler = SNSPublishHandler;
+exports.publish = publish;
+
+
+class subcribe extends webkool.Handler {
+	doRequest() {
+    AWS = AWS || require('aws-sdk');
+    SNS = SNS || new AWS.SNS();
+
+		try {
+			var handler = this, behavior = handler.behavior;
+			if (behavior && 'onConstruct' in behavior) {
+				var params = behavior.onConstruct(handler, handler.model, handler.query);
+
+        SNS.subscribe(
+          {Protocol: params.Protocol, TopicArn: params.TopicArn, Endpoint: params.Endpoint},
+          function(error, data) {
+            try {
+              if (!error) {
+                handler.result = data;
+              }
+              else
+                handler.doError(new Error('SNSHandler.subscribe"' + params.Endpoint + '" ' + error));
+              handler.synchronize();
+            }
+            catch (e) {
+              webkool.application.reportError(handler, e);
+            }
+          }
+        );
+      }
+			else
+				throw new Error('SNSHandler.subscribe "' + handler.url + '" has no parameters.');
+		}
+		catch (e) {
+			webkool.application.reportError(handler, e);
+		}
+	}
+}
+exports.subcribe = subcribe;

@@ -17,23 +17,16 @@
 
 "use strict";
 
-// import {Handler,Behavior} from "./webkool";
-var _webkool = require("./webkool");
-var Handler = _webkool.Handler;
-var Behavior = _webkool.Behavior;
+var webkool = require("./webkool");
 
+var AWS, S3;
 
-var AWS = require('aws-sdk');
-AWS.config.update({
-	accessKeyId: _webkool.key,
-	secretAccessKey: _webkool.secret,
-	region: _webkool.region
-});
+class putObject extends webkool.Handler {
 
-var S3 = new AWS.S3();
-
-class S3PutObjectHandler extends Handler {
 	doRequest() {
+    AWS = AWS || require('aws-sdk');
+    S3 = S3 || new AWS.S3();
+
 		try {
 			var handler = this, behavior = handler.behavior;
 			if (behavior && 'onConstruct' in behavior) {
@@ -47,28 +40,31 @@ class S3PutObjectHandler extends Handler {
                 handler.result = data;
               }
               else
-                handler.doError(new Error('S3 putObject Handler "' + handler.url + '" ' + error));
+                handler.doError(new Error('S3Handler.putObject "' + handler.url + '" ' + error));
               handler.synchronize();
             }
             catch (e) {
-              _webkool.application.reportError(handler, e);
+              webkool.application.reportError(handler, e);
             }
           }
         );
       }
 			else
-				throw new Error('S3 putObject Handler "' + handler.url + '" has no parameters.');
+				throw new Error('S3Handler.putObject "' + handler.url + '" has no parameters.');
 		}
 		catch (e) {
-			_webkool.application.reportError(handler, e);
+			webkool.application.reportError(handler, e);
 		}
 	}
 }
-exports.S3PutObjectHandler = S3PutObjectHandler;
+exports.putObjectHandler = putObjectHandler;
 
 
-class S3GetObjectHandler extends Handler {
+class getObjectHandler extends webkool.Handler {
 	doRequest() {
+    AWS = AWS || require('aws-sdk');
+    S3 = S3 || new AWS.S3();
+
 		try {
 			var handler = this, behavior = handler.behavior;
 			if (behavior && 'onConstruct' in behavior) {
@@ -82,21 +78,21 @@ class S3GetObjectHandler extends Handler {
                 handler.result = data;
               }
               else
-                handler.doError(new Error('S3 getObject Handler "' + handler.url + '" ' + error));
+                handler.doError(new Error('S3Handler.getObject "' + handler.url + '" ' + error));
               handler.synchronize();
             }
             catch (e) {
-              _webkool.application.reportError(handler, e);
+              webkool.application.reportError(handler, e);
             }
           }
         );
       }
 			else
-				throw new Error('S3 getObject Handler "' + handler.url + '" has no parameters.');
+				throw new Error('S3Handler.getObject "' + handler.url + '" has no parameters.');
 		}
 		catch (e) {
-			_webkool.application.reportError(handler, e);
+			webkool.application.reportError(handler, e);
 		}
 	}
 }
-exports.S3GetObjectHandler = S3GetObjectHandler;
+exports.getObjectHandler = getObjectHandler;

@@ -21,7 +21,7 @@ var webkool = require('./webkool');
 
 var AWS, SES;
 
-class sendEmailHandler extends webkool.Handler {
+class sendEmail extends webkool.Handler {
 
 	doRequest() {
     AWS = AWS || require('aws-sdk');
@@ -53,7 +53,7 @@ class sendEmailHandler extends webkool.Handler {
                 handler.result = data;
               }
               else
-                handler.doError(new Error('SES SendEmail Handler ' + error));
+                handler.doError(new Error('SESHandler.sendEmail ' + error));
               handler.synchronize();
             }
             catch (e) {
@@ -63,7 +63,7 @@ class sendEmailHandler extends webkool.Handler {
         );
       }
 			else
-				throw new Error('SES SendEmail Handler "' + handler.url + '" has no parameters.');
+				throw new Error('SESHandler.sendEmail "' + handler.url + '" has no parameters.');
 		}
 		catch (e) {
 			webkool.application.reportError(handler, e);
@@ -71,4 +71,4 @@ class sendEmailHandler extends webkool.Handler {
 	}
 }
 
-exports.sendEmailHandler = sendEmailHandler;
+exports.sendEmail = sendEmail;

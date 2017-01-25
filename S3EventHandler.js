@@ -17,19 +17,14 @@
 
 "use strict";
 
-// import {Handler,Behavior} from "./webkool";
-var _webkool = require("./webkool");
-var Handler = _webkool.Handler;
-var Behavior = _webkool.Behavior;
+var webkool = require("./webkool");
+var Handler = webkool.Handler;
+var Behavior = webkool.Behavior;
+
+var S3Handler = require("./S3Handler");
 
 
-// import {S3GetObjectHandler} from "./S3Handler";
-var _S3Handler = require("./S3Handler");
-var S3GetObjectHandler = _S3Handler.S3GetObjectHandler;
-var S3PutObjectHandler = _S3Handler.S3PutObjectHandler;
-
-
-Handler.bind("/S3EventGetObject", S3GetObjectHandler.template({
+Handler.bind("/S3EventGetObject", S3Handler.getObject.template({
 	Behavior: Behavior.template ({
 		onConstruct(handler, model, query) {
 			return {
@@ -40,7 +35,8 @@ Handler.bind("/S3EventGetObject", S3GetObjectHandler.template({
 	})
 }));
 
-Handler.bind("/S3EventPutObject", S3PutObjectHandler.template({
+
+Handler.bind("/S3EventPutObject", S3Handler.putObject.template({
 	Behavior: Behavior.template ({
 		onConstruct(handler, model, query) {
 			return {
