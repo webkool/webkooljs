@@ -29,6 +29,9 @@ exports.S3Handler = _S3Handler;
 var _S3EventHandler = require('./S3EventHandler');
 exports.S3EventHandler = _S3EventHandler;
 
+var _SESHandler = require('./SESHandler');
+exports.SESHandler = _SESHandler;
+
 var _SNSHandler = require('./SNSHandler');
 exports.SNSHandler = _SNSHandler;
 
