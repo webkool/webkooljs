@@ -21,61 +21,24 @@ var webkool = require("./webkool");
 var Handler = webkool.Handler;
 var Behavior = webkool.Behavior;
 
-var S3Handler = require("./S3Handler");
 
-
-Handler.bind("/S3EventGetObject", S3Handler.getObject.template({
-	Behavior: Behavior.template ({
-		onConstruct(handler, model, query) {
-			return {
-				Bucket: query.Bucket,
-				Key: query.Key,
-			};
-		},
-	})
-}));
-
-
-Handler.bind("/S3EventPutObject", S3Handler.putObject.template({
-	Behavior: Behavior.template ({
-		onConstruct(handler, model, query) {
-			return {
-				Bucket: "backoffice.frigomagic.com",
-				Key: query.Key,
-				Body: query.Body,
-				ContentType: "application/json"
-			};
-		},
-	})
-}));
-
-Handler.bind("/S3/ObjectCreated/Put", Handler.template({
+Handler.bind("ObjectCreated:Put", Handler.template({
 	contentType : "application/json",
 
 	Behavior: Behavior.template ({
     onRequest(handler, model, query) {
-			this.start = new Date();
-			this.key = query.object.key.replace('notify-queue/', 'notify-done/');
-			this.s3GetObject = handler.request("/S3EventGetObject", {Bucket: query.bucket.name, Key: query.object.key})
+			this.data = handler.request("/S3/getObject", {Bucket: query.bucket.name, Key: query.object.key})
 		},
-    "/S3EventGetObject"(handler, model, query) {
-      var s3GetObject = this.s3GetObject.valueOf();
-      var event = JSON.parse(s3GetObject.Body);
+    "/S3/getObject"(handler, model, query) {
+      var data = this.data.valueOf();
+      var event = JSON.parse(data.Body);
+      event.body._event = "ObjectCreated:Put";
+      event.body._bucket = query.Bucket;
+      event.body._key = query.Key;
       this.result = handler.request(event.path, event.body);
-			this[event.path] = this.onRequestDone;
-		},
-		onRequestDone(handler, model, query) {
-      var result = this.result.valueOf();
-			result.duration = ((new Date()) - this.start) / 1000;
-			this.s3PutObject = handler.request("/S3EventPutObject", {Body: JSON.stringify(result), Key: this.key})
 		},
     onComplete(handler, model, query) {
-      var result = this.result.valueOf();
-      handler.result = {
-        status: 'ok',
-        code: '200',
-				duration: ((new Date()) - this.start) / 1000
-      };
+      handler.result = this.result.valueOf();
     }
 	})
 }));

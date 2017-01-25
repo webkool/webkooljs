@@ -72,3 +72,22 @@ class sendEmail extends webkool.Handler {
 }
 
 exports.sendEmail = sendEmail;
+
+
+Handler.bind("/SES/sendEmail", sendEmail.template({
+	contentType : "application/json",
+
+	Behavior: Behavior.template ({
+		onConstruct(handler, model, query) {
+			return {
+				from: query.from,
+        to: [query.to],
+        subject: query.subject,
+        text: query.text,
+        html: query.html
+			};
+		}
+	})
+}));
+
+

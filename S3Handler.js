@@ -21,6 +21,82 @@ var webkool = require("./webkool");
 
 var AWS, S3;
 
+class deleteObject extends webkool.Handler {
+	doRequest() {
+    AWS = AWS || require('aws-sdk');
+    S3 = S3 || new AWS.S3();
+
+		try {
+			var handler = this, behavior = handler.behavior;
+			if (behavior && 'onConstruct' in behavior) {
+				var params = behavior.onConstruct(handler, handler.model, handler.query);
+
+        S3.deleteObject(
+          params,
+          function(error, data) {
+           try {
+              if (!error) {
+                handler.result = data;
+              }
+              else
+                handler.doError(new Error('S3Handler.deleteObject "' + handler.url + '" ' + error));
+              handler.synchronize();
+            }
+            catch (e) {
+              webkool.application.reportError(handler, e);
+            }
+          }
+        );
+      }
+			else
+				throw new Error('S3Handler.deleteObject "' + handler.url + '" has no parameters.');
+		}
+		catch (e) {
+			webkool.application.reportError(handler, e);
+		}
+	}
+}
+exports.deleteObject = deleteObject;
+
+
+class getObject extends webkool.Handler {
+	doRequest() {
+    AWS = AWS || require('aws-sdk');
+    S3 = S3 || new AWS.S3();
+
+		try {
+			var handler = this, behavior = handler.behavior;
+			if (behavior && 'onConstruct' in behavior) {
+				var params = behavior.onConstruct(handler, handler.model, handler.query);
+
+        S3.getObject(
+          params,
+          function(error, data) {
+           try {
+              if (!error) {
+                handler.result = data;
+              }
+              else
+                handler.doError(new Error('S3Handler.getObject "' + handler.url + '" ' + error));
+              handler.synchronize();
+            }
+            catch (e) {
+              webkool.application.reportError(handler, e);
+            }
+          }
+        );
+      }
+			else
+				throw new Error('S3Handler.getObject "' + handler.url + '" has no parameters.');
+		}
+		catch (e) {
+			webkool.application.reportError(handler, e);
+		}
+	}
+}
+exports.getObject = getObject;
+
+
 class putObject extends webkool.Handler {
 
 	doRequest() {
@@ -60,39 +136,39 @@ class putObject extends webkool.Handler {
 exports.putObject = putObject;
 
 
-class getObject extends webkool.Handler {
-	doRequest() {
-    AWS = AWS || require('aws-sdk');
-    S3 = S3 || new AWS.S3();
+Handler.bind("/S3/deleteObject", S3Handler.deleteObject.template({
+	Behavior: Behavior.template ({
+		onConstruct(handler, model, query) {
+			return {
+				Bucket: query.Bucket,
+				Key: query.Key
+			};
+		},
+	})
+}));
 
-		try {
-			var handler = this, behavior = handler.behavior;
-			if (behavior && 'onConstruct' in behavior) {
-				var params = behavior.onConstruct(handler, handler.model, handler.query);
 
-        S3.getObject(
-          params,
-          function(error, data) {
-           try {
-              if (!error) {
-                handler.result = data;
-              }
-              else
-                handler.doError(new Error('S3Handler.getObject "' + handler.url + '" ' + error));
-              handler.synchronize();
-            }
-            catch (e) {
-              webkool.application.reportError(handler, e);
-            }
-          }
-        );
-      }
-			else
-				throw new Error('S3Handler.getObject "' + handler.url + '" has no parameters.');
-		}
-		catch (e) {
-			webkool.application.reportError(handler, e);
-		}
-	}
-}
-exports.getObject = getObject;
+Handler.bind("/S3/getObject", S3Handler.getObject.template({
+	Behavior: Behavior.template ({
+		onConstruct(handler, model, query) {
+			return {
+				Bucket: query.Bucket,
+				Key: query.Key,
+			};
+		},
+	})
+}));
+
+
+Handler.bind("/S3/putObject", S3Handler.putObject.template({
+	Behavior: Behavior.template ({
+		onConstruct(handler, model, query) {
+			return {
+				Bucket: query.Bucket,
+				Key: query.Key,
+				Body: query.Body,
+				ContentType: query.ContentType
+			};
+		},
+	})
+}));
