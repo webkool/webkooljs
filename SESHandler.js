@@ -19,15 +19,17 @@
 
 var webkool = require('./webkool');
 
-var AWS = require('aws-sdk');
+var AWS, SES;
 
-var SES = new AWS.SES();
-
-class SESSendEmailHandler extends webkool.Handler {
+class sendEmailHandler extends webkool.Handler {
 
 	doRequest() {
+    AWS = AWS || require('aws-sdk');
+    SES = SES || new AWS.SES();
+      
 		try {
 			var handler = this, behavior = handler.behavior;
+
 			if (behavior && 'onConstruct' in behavior) {
 				var params = behavior.onConstruct(handler, handler.model, handler.query);
 
@@ -69,4 +71,4 @@ class SESSendEmailHandler extends webkool.Handler {
 	}
 }
 
-exports.SESSendEmailHandler = SESSendEmailHandler;
+exports.sendEmailHandler = sendEmailHandler;
