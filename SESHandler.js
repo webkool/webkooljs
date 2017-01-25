@@ -55,7 +55,7 @@ class SESSendEmailHandler extends webkool.Handler {
               handler.synchronize();
             }
             catch (e) {
-              _webkool.application.reportError(handler, e);
+              webkool.application.reportError(handler, e);
             }
           }
         );
