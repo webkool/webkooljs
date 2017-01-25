@@ -136,7 +136,7 @@ class putObject extends webkool.Handler {
 exports.putObject = putObject;
 
 
-Handler.bind("/S3/deleteObject", S3Handler.deleteObject.template({
+Handler.bind("/S3/deleteObject", deleteObject.template({
 	Behavior: Behavior.template ({
 		onConstruct(handler, model, query) {
 			return {
@@ -148,7 +148,7 @@ Handler.bind("/S3/deleteObject", S3Handler.deleteObject.template({
 }));
 
 
-Handler.bind("/S3/getObject", S3Handler.getObject.template({
+Handler.bind("/S3/getObject", getObject.template({
 	Behavior: Behavior.template ({
 		onConstruct(handler, model, query) {
 			return {
@@ -160,7 +160,7 @@ Handler.bind("/S3/getObject", S3Handler.getObject.template({
 }));
 
 
-Handler.bind("/S3/putObject", S3Handler.putObject.template({
+Handler.bind("/S3/putObject", putObject.template({
 	Behavior: Behavior.template ({
 		onConstruct(handler, model, query) {
 			return {
