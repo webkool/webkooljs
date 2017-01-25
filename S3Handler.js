@@ -57,10 +57,10 @@ class putObject extends webkool.Handler {
 		}
 	}
 }
-exports.putObjectHandler = putObjectHandler;
+exports.putObject = putObject;
 
 
-class getObjectHandler extends webkool.Handler {
+class getObject extends webkool.Handler {
 	doRequest() {
     AWS = AWS || require('aws-sdk');
     S3 = S3 || new AWS.S3();
@@ -95,4 +95,4 @@ class getObjectHandler extends webkool.Handler {
 		}
 	}
 }
-exports.getObjectHandler = getObjectHandler;
+exports.getObject = getObject;
