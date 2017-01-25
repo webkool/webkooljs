@@ -18,10 +18,12 @@
 "use strict";
 
 var webkool = require("./webkool");
+var Handler = webkool.Handler;
+var Behavior = webkool.Behavior;
 
 var AWS, SNS;
 
-class createPlatformEndpoint extends webkool.Handler {
+class createPlatformEndpoint extends Handler {
 
 	doRequest() {
     AWS = AWS || require('aws-sdk');
@@ -60,7 +62,7 @@ class createPlatformEndpoint extends webkool.Handler {
 exports.createPlatformEndpoint = createPlatformEndpoint;
 
 
-class publish extends webkool.Handler {
+class publish extends Handler {
 	doRequest() {
     AWS = AWS || require('aws-sdk');
     SNS = SNS || new AWS.SNS();
@@ -98,7 +100,7 @@ class publish extends webkool.Handler {
 exports.publish = publish;
 
 
-class subcribe extends webkool.Handler {
+class subcribe extends Handler {
 	doRequest() {
     AWS = AWS || require('aws-sdk');
     SNS = SNS || new AWS.SNS();

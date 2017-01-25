@@ -18,10 +18,12 @@
 "use strict";
 
 var webkool = require('./webkool');
+var Handler = webkool.Handler;
+var Behavior = webkool.Behavior;
 
 var AWS, SES;
 
-class sendEmail extends webkool.Handler {
+class sendEmail extends Handler {
 
 	doRequest() {
     AWS = AWS || require('aws-sdk');

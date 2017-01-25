@@ -18,10 +18,12 @@
 "use strict";
 
 var webkool = require("./webkool");
+var Handler = webkool.Handler;
+var Behavior = webkool.Behavior;
 
 var AWS, S3;
 
-class deleteObject extends webkool.Handler {
+class deleteObject extends Handler {
 	doRequest() {
     AWS = AWS || require('aws-sdk');
     S3 = S3 || new AWS.S3();
@@ -59,7 +61,7 @@ class deleteObject extends webkool.Handler {
 exports.deleteObject = deleteObject;
 
 
-class getObject extends webkool.Handler {
+class getObject extends Handler {
 	doRequest() {
     AWS = AWS || require('aws-sdk');
     S3 = S3 || new AWS.S3();
@@ -97,7 +99,7 @@ class getObject extends webkool.Handler {
 exports.getObject = getObject;
 
 
-class putObject extends webkool.Handler {
+class putObject extends Handler {
 
 	doRequest() {
     AWS = AWS || require('aws-sdk');
