@@ -1,3 +1,20 @@
+/*
+ *     Copyright (C) 2005-2017 Haruni SARL.
+ *     Written by Sébastien BUREL <sb@haruni.net>
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+
 "use strict";
 
 var application = exports.application = {
@@ -38,7 +55,6 @@ class Behavior {
 		var result;
 		if (it0) {
 			result = function(it1) {
-				//var self = this ? this : Object.create(constructor.prototype);
 				var it = {};
 				for (var i in it0)
 					it[i] = it0[i];
@@ -47,7 +63,6 @@ class Behavior {
 						it[i] = it1[i];
 					}
 				}
-				//constructor.call(self, it);
 				return new constructor(it);
 			};
 			result.prototype = this.prototype;
@@ -82,7 +97,6 @@ class Template {
 		var result;
 		if (it0) {
 			result = function(name, it1) {
-				//var self = this ? this : Object.create(constructor.prototype);
 				var it = {};
 				for (var i in it0)
 					it[i] = it0[i];
@@ -91,7 +105,6 @@ class Template {
 						it[i] = it1[i];
 					}
 				}
-				//constructor.call(self, name, it);
 				return new constructor(name, it);
 			};
 			result.prototype = this.prototype;
@@ -328,7 +341,6 @@ class Handler {
 		var result;
 		if (it0) {
 			result = function(parent, url, query, it1) {
-				//var self = this ? this: Object.create(constructor.prototype);
 				var it = {};
 				for (var i in it0)
 					it[i] = it0[i];
@@ -336,7 +348,6 @@ class Handler {
 					for (i in it1)
 						it[i] = it1[i];
 				}
-				//constructor.call(self, parent, url, query);
 				return new constructor(parent, url, query, it);
 			};
 			result.prototype = this.prototype;

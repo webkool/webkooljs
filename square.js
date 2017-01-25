@@ -1,14 +1,30 @@
+/*
+ *     Copyright (C) 2005-2017 Haruni SARL.
+ *     Written by Sébastien BUREL <sb@haruni.net>
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+
 "use strict";
 
-// import {application} from "./webkool";
-var _webkool = require("./webkool");
+var webkool = require("./webkool");
 
 var json = function(data) {
 	return JSON.stringify(data, null, 4);
 };
 
 function	include(url,scope) {
-	return _webkool.application.render(url, scope);
+	return webkool.application.render(url, scope);
 }
 
 
