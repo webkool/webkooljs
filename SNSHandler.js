@@ -39,7 +39,7 @@ class createPlatformEndpoint extends Handler {
           function(error, data) {
            try {
               if (!error) {
-                handler.result = data.EndpointArn;
+                handler.result = data;
               }
               else
                 handler.doError(new Error('SNSHandler.createPlatformEndpoint "' + params.Token + '" ' + error));
@@ -80,7 +80,7 @@ class publish extends Handler {
                 handler.result = data;
               }
               else
-                handler.result = {MessageId: error.message + " " + params.TargetArn};
+                handler.result = {TargetArn: params.TargetArn, ErrorId: error.message};
               handler.synchronize();
             }
             catch (e) {
