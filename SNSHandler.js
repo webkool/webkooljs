@@ -136,3 +136,46 @@ class subcribe extends Handler {
 	}
 }
 exports.subcribe = subcribe;
+
+
+Handler.bind("/SNS/createPlatformEndpoint", createPlatformEndpoint.template({
+	contentType : "application/json",
+
+	Behavior: Behavior.template ({
+		onConstruct(handler, model, query) {
+			return {
+        Token : query.Token,  
+        PlatformApplicationArn : query.PlatformApplicationArn
+			};
+		}
+	})
+}));
+
+
+Handler.bind("/SNS/publish", publish.template({
+	contentType : "application/json",
+
+	Behavior: Behavior.template ({
+		onConstruct(handler, model, query) {
+			return {
+        Message: query.Message,
+        TargetArn: query.TargetArn
+			};
+		}
+	})
+}));
+
+
+Handler.bind("/SNS/subcribe", subcribe.template({
+	contentType : "application/json",
+
+	Behavior: Behavior.template ({
+		onConstruct(handler, model, query) {
+			return {
+        Protocol: query.Protocol,
+        TopicArn: query.TopicArn,
+        Endpoint: query.Endpoint
+			};
+		}
+	})
+}));
