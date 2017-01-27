@@ -100,7 +100,7 @@ class publish extends Handler {
 exports.publish = publish;
 
 
-class subcribe extends Handler {
+class subscribe extends Handler {
 	doRequest() {
     AWS = AWS || require('aws-sdk');
     SNS = SNS || new AWS.SNS();
@@ -135,7 +135,7 @@ class subcribe extends Handler {
 		}
 	}
 }
-exports.subcribe = subcribe;
+exports.subscribe = subscribe;
 
 
 Handler.bind("/SNS/createPlatformEndpoint", createPlatformEndpoint.template({
@@ -166,7 +166,7 @@ Handler.bind("/SNS/publish", publish.template({
 }));
 
 
-Handler.bind("/SNS/subcribe", subcribe.template({
+Handler.bind("/SNS/subscribe", subscribe.template({
 	contentType : "application/json",
 
 	Behavior: Behavior.template ({
