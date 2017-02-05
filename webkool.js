@@ -616,7 +616,7 @@ class Tool extends Application {
 		var message = error.toString();
 		if (error.stack)
 			message += '\n' + error.stack.toString();
-
+		console.log(message);
 		this._callback(message, null);
 	}
 }
