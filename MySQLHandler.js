@@ -49,14 +49,15 @@ class _MySQL {
 		});
 	}
 	
-	connect(host, user, database, password) {
+	connect(host, user, database, password, charset) {
 		this._mysql = require('mysql');
 		this._connection = this._mysql.createConnection({
 			host: host,
 			user: user,
 			database: database,
 			password: password,
-			timezone: '+00:00'
+			timezone: '+00:00',
+			charset: charset
 		});
 		this._onDisconnect();
 		this._connection.connect();
