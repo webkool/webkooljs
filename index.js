@@ -20,6 +20,9 @@
 var _webkool = require('./webkool');
 exports.webkool = _webkool;
 
+var _HTTPHandler = require('./HTTPHandler');
+exports.HTTPHandler = _HTTPHandler.HTTPHandler;
+
 var _square = require('./square');
 exports.square = _square;
 
