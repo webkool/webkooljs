@@ -78,6 +78,9 @@ class getObject extends Handler {
               if (!error) {
                 handler.result = data;
               }
+              else if (error.statusCode == 404) {
+                handler.result = null;
+              }
               else
                 handler.doError(new Error('S3Handler.getObject "' + handler.url + '" ' + error));
               handler.synchronize();
