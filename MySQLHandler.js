@@ -25,6 +25,16 @@ class _MySQL {
 	constructor() {
 		this._connection = null;
 		this._mysql = null;
+		this._credentials = null;
+	}
+
+	_connect() {
+		if (!this._connection) {
+			this._mysql = require('mysql');
+			this._connection = this._mysql.createConnection(this._credentials);
+			this._onDisconnect();
+			this._connection.connect();	
+		}
 	}
 
 	_onDisconnect() {
@@ -45,27 +55,33 @@ class _MySQL {
 	}
 	
 	close() {
-		this._connection.end(function(err) {
-		});
+		if (this._connection) {
+			this._connection.end(function(err) {
+			});	
+		}
 	}
 	
 	connect(host, user, database, password, charset) {
-		this._mysql = require('mysql');
-		this._connection = this._mysql.createConnection({
+		this._credentials = {
 			host: host,
 			user: user,
 			database: database,
 			password: password,
 			timezone: '+00:00',
 			charset: charset
-		});
-		this._onDisconnect();
-		this._connection.connect();
+		};
 	}
-	
+
 	escape(name) {
+		if (!this._connection) this._connect();
 		return this._connection.escape(name);
 	}
+
+	query(...args) {
+		if (!this._connection) this._connect();
+		return this._connection.query(...args);
+	}
+
 }
 var MySQL = exports.MySQL = new _MySQL();
 
@@ -99,7 +115,8 @@ class SQLHandler extends Handler {
 			var handler = this, behavior = handler.behavior;
 			if (behavior && 'onConstruct' in behavior) {
 				var data = handler.doPrepare(behavior.onConstruct(handler, handler.model, handler.query));
-				MySQL._connection.query(data.statement, data.values, function (error, result) {
+				MySQL._connect();
+				MySQL.query(data.statement, data.values, function (error, result) {
 					try {
 						if (!error)
 							handler.result = handler.doResult(result);
