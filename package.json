@@ -1,6 +1,6 @@
 {
   "name": "webkooljs",
-  "version": "1.1.18",
+  "version": "1.1.20",
   "description": "Webkool javascript library for nodejs",
   "main": "index.js",
   "scripts": {

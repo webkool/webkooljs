@@ -1,5 +1,5 @@
 /*
- *     Copyright (C) 2005-2018 Haruni SARL.
+ *     Copyright (C) 2005-2020 Haruni SARL.
  *     Written by Sébastien BUREL <sb@haruni.net>
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
@@ -125,7 +125,7 @@ class Handler {
 		for (var i in it)
 			this[i] = it[i];
 
-		this.contentType = this.contentType ? this.contentType : 'text/html';
+		this.contentType = this.contentType ? this.contentType : 'text/html; charset=utf-8';
 		this.status = this.status ? this.status : 200;
 		this.filter = this.filter ? this.filter : null;
 		this.parent = null;
@@ -367,7 +367,7 @@ class Model {
 exports.Model = Model;
 
 const Error404Handler = Handler.template({
-	contentType : "text/html",
+	contentType : "text/html; charset=utf-8",
 	status : "404",
 	Behavior: Behavior.template ({
 		onComplete(handler, model, query) {
@@ -539,7 +539,7 @@ class Application {
 				<p>The requested URL "${url}" encounter and error : ${message.replace(/\n/g, '<br/>')}</p>
 			</body>
 		</html>`;
-		response.writeHead(500, { 'Content-Type': 'text/html', 'Content-Length': html.length });
+		response.writeHead(500, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': html.length });
 		response.end(html);
 	}
 	

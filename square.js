@@ -1,5 +1,5 @@
 /*
- *     Copyright (C) 2005-2018 Haruni SARL.
+ *     Copyright (C) 2005-2020 Haruni SARL.
  *     Written by Sébastien BUREL <sb@haruni.net>
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
