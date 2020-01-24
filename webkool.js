@@ -717,3 +717,28 @@ class Server extends Application {
 	}	
 }
 exports.Server = Server;
+
+
+function AWSProxy(request) {
+  return new Promise((resolve, reject ) => {
+    let application = new Tool((error, message) => {
+      if (error)
+        return reject(error);
+      resolve(message);
+    });
+    let model = application.getModel()
+    model.context = request.requestContext
+    model.event = request
+    if (request.body) {
+      let body = JSON.parse(request.body)
+      application.request(request.path, body);
+    }
+    else if (request.queryStringParameters) {
+      application.request(request.path, request.queryStringParameters)
+    }
+    else {
+      application.request(request.path, {})
+    }
+  });
+};
+exports.AWSProxy = AWSProxy;
